@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { FiArrowLeft, FiMail, FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -13,7 +13,7 @@ import Button from '../../components/Button';
 
 import { Container, Content, Background } from './styles';
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const handleSubmit = useCallback(async (data: object) => {
@@ -24,7 +24,7 @@ const SignIn: React.FC = () => {
         email: Yup.string()
           .required('Nome obrigatório')
           .email('Digite um e-mail válido'),
-        password: Yup.string().required('Senha obrigatória'),
+        password: Yup.string().min(6, 'No mínimo 6 caracteres'),
       });
 
       await schema.validate(data, {
@@ -41,32 +41,31 @@ const SignIn: React.FC = () => {
 
   return (
     <Container>
+      <Background />
       <Content>
         <img src={logo} alt="GoBarber" />
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Faça seu logon</h1>
 
-          <Input icon={FiMail} name="email" placeholder="E-mail" />
+          <Input name="name" icon={FiUser} placeholder="Nome" />
+          <Input name="email" icon={FiMail} placeholder="E-mail" />
           <Input
-            icon={FiLock}
             name="password"
+            icon={FiLock}
             type="password"
             placeholder="Senha"
           />
 
-          <Button type="submit">Entrar</Button>
-
-          <a href="forgot">Esqueci minha senha</a>
+          <Button type="submit">Cadastrar</Button>
         </Form>
 
         <a href="/login">
-          <FiLogIn />
-          Criar conta
+          <FiArrowLeft />
+          Voltar
         </a>
       </Content>
-      <Background />
     </Container>
   );
 };
 
-export default SignIn;
+export default SignUp;
